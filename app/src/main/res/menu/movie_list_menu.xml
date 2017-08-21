@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/ml_sort_button"
+        android:icon="@drawable/ic_action_sort"
+        android:title="@string/menu_item_sort"
+        android:orderInCategory="1"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/ml_refresh_button"
+        android:icon="@drawable/ic_action_refresh"
+        android:title="@string/menu_item_refresh"
+        android:orderInCategory="2"
+        app:showAsAction="ifRoom"/>
+</menu>
