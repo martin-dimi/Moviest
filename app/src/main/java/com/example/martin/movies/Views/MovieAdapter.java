@@ -68,11 +68,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             itemView.setOnClickListener(this);
         }
 
-
         public void setMoviePoster(String posterPath){
             String posterURL = NetworkUtils.buildPosterURL(posterPath).toString();
             Log.i(CLASS_TAG, "Fetching the poster from" + posterURL);
-            Picasso.with(parent).load(posterURL).into(mMovieArt);
+            Picasso.with(parent)
+                    .load(posterURL)
+                    .placeholder(R.drawable.ic_placeholder)
+                    .error(R.drawable.ic_placeholder_error)
+                    .into(mMovieArt);
         }
 
         @Override

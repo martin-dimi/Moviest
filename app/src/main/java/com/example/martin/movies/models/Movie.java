@@ -1,29 +1,38 @@
 package com.example.martin.movies.models;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-
-public class Movie implements Serializable {
+public class Movie implements Parcelable {
 
     private int id;
     private String title;
     private double rating;
     private String poster;
     private String overview;
-    private String release_date;
+    private String releaseDate;
 
     public Movie(){
 
     }
 
-    public Movie(int id, String title, double rating, String poster, String overview, String release_date) {
+    public Movie(int id, String title, double rating, String poster, String overview, String releaseDate) {
 
         this.id = id;
         this.title = title;
         this.rating = rating;
         this.poster = poster;
         this.overview = overview;
-        this.release_date = release_date;
+        this.releaseDate = releaseDate;
+    }
+
+    private Movie(Parcel in) {
+        this.id = in.readInt();
+        this.title = in.readString();
+        this.rating = in.readDouble();
+        this.poster = in.readString();
+        this.overview = in.readString();
+        this.releaseDate = in.readString();
     }
 
     public int getId() {
@@ -66,13 +75,38 @@ public class Movie implements Serializable {
         this.overview = overview;
     }
 
-    public String getRelease_date() {
-        return release_date;
+    public String getReleaseDate() {
+        return releaseDate;
     }
 
-    public void setRelease_date(String release_date) {
-        this.release_date = release_date;
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
     }
 
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
+        parcel.writeString(title);
+        parcel.writeDouble(rating);
+        parcel.writeString(poster);
+        parcel.writeString(overview);
+        parcel.writeString(releaseDate);
+    }
+
+    public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
+        public Movie createFromParcel(Parcel in) {
+            return new Movie(in);
+        }
+
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
 
 }

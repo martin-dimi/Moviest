@@ -24,7 +24,7 @@ public final class NetworkUtils {
     private static final String IMAGE_SIZE = "w185";
 
     //Insert your KEY here
-    private static final String API_KEY = "your KEY";
+    private static final String API_KEY = "a06c5111b74fbd8fec912b35f2a2a065";
 
     public static URL buildMovieListURL(boolean sort){
 
