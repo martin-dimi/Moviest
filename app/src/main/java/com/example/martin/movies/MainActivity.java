@@ -2,6 +2,7 @@ package com.example.martin.movies;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
@@ -16,28 +17,31 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.martin.movies.AsyncTasks.AsyncTaskComplete;
-import com.example.martin.movies.AsyncTasks.MovieQueryTask;
+import com.example.martin.movies.AsyncTasks.FetchMoviesDatabase;
+import com.example.martin.movies.AsyncTasks.FetchMoviesNetwork;
 import com.example.martin.movies.Views.MovieAdapter;
 import com.example.martin.movies.models.Movie;
-import com.example.martin.movies.utils.MovieJSONUtils;
+import com.example.martin.movies.utils.MovieUtils;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+@SuppressWarnings("CanBeFinal")
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieOnClickListener{
 
     private static final String CLASS_LOG = MainActivity.class.getName();
 
-    @BindView(R.id.rv_movie_list) RecyclerView mMovieList;
-    @BindView(R.id.pb_loading) ProgressBar progressBar;
-    @BindView(R.id.tv_error_internet) TextView error_internet;
-    MovieAdapter adapter;
+    @BindView(R.id.rv_movie_list)  RecyclerView mMovieList;
+    @BindView(R.id.pb_loading)  ProgressBar progressBar;
+    @BindView(R.id.tv_error_internet)  TextView error_internet;
+    private MovieAdapter adapter;
 
     private List<Movie> movies;
     private boolean preference = false;
+    private FetchMoviesNetwork fetchOnline;
+    private FetchMoviesDatabase fetchDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +56,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         adapter = new MovieAdapter(this);
         mMovieList.setAdapter(adapter);
 
+        fetchOnline = new FetchMoviesNetwork(this, getLoaderManager(), new FetchMoviesOnlineTask());
+        fetchDatabase = new FetchMoviesDatabase(this, new FetchMoviesDatabaseTask(), getLoaderManager(), getContentResolver());
         fetchMovies();
+
     }
 
     @Override
@@ -66,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         int pressed_id = item.getItemId();
         int sort_button = R.id.ml_sort_button;
         int refresh_button = R.id.ml_refresh_button;
+        int favourites_button = R.id.ml_favourites_button;
 
         if(pressed_id == sort_button){
             preference = !preference;
@@ -73,19 +81,29 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             return true;
         }
 
-        if(pressed_id == refresh_button){
+        else if(pressed_id == refresh_button){
             fetchMovies();
             return true;
         }
 
+        else if(pressed_id == favourites_button){
+            showFavourites();
+        }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showFavourites() {
+        hideErrorMessage();
+        hideLoadingIndicator();
+        fetchDatabase.fetchMovies();
     }
 
     private void fetchMovies(){
         if(isOnline()) {
             hideErrorMessage();
             hideLoadingIndicator();
-            new MovieQueryTask(this, new FetchMovieDataTaskComplete(), preference).execute();
+            fetchOnline.fetchMovies(preference);
         }
         else{
             showErrorMessage();
@@ -140,13 +158,24 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         startActivity(intent);
     }
 
-    private class FetchMovieDataTaskComplete implements AsyncTaskComplete<String>{
+    private class FetchMoviesOnlineTask implements FetchMoviesNetwork.AsyncTaskComplete<String>{
 
         @Override
         public void onTaskComplete(String movie_json) {
-            movies = MovieJSONUtils.getMoviesFromJSON(movie_json);
+            movies = MovieUtils.getMoviesFromJSON(movie_json);
             assert movies != null;
             Log.i(CLASS_LOG, "Number of holders: " + Integer.toString(movies.size()));
+            adapter.setMovieData(movies);
+            showLoadingIndicator();
+        }
+    }
+
+    private class FetchMoviesDatabaseTask implements FetchMoviesDatabase.onFetchDatabaseComplete<Cursor>{
+
+        @Override
+        public void onTaskComplete(Cursor result) {
+            movies = MovieUtils.getMoviesFromCursor(result);
+            assert movies != null;
             adapter.setMovieData(movies);
             showLoadingIndicator();
         }

@@ -8,20 +8,19 @@ public class Movie implements Parcelable {
     private int id;
     private String title;
     private double rating;
-    private String poster;
+    private String posterURL;
     private String overview;
     private String releaseDate;
 
     public Movie(){
-
     }
 
-    public Movie(int id, String title, double rating, String poster, String overview, String releaseDate) {
+    public Movie(int id, String title, double rating, String posterURL, String overview, String releaseDate) {
 
         this.id = id;
         this.title = title;
         this.rating = rating;
-        this.poster = poster;
+        this.posterURL = posterURL;
         this.overview = overview;
         this.releaseDate = releaseDate;
     }
@@ -30,7 +29,7 @@ public class Movie implements Parcelable {
         this.id = in.readInt();
         this.title = in.readString();
         this.rating = in.readDouble();
-        this.poster = in.readString();
+        this.posterURL = in.readString();
         this.overview = in.readString();
         this.releaseDate = in.readString();
     }
@@ -59,12 +58,8 @@ public class Movie implements Parcelable {
         this.rating = rating;
     }
 
-    public String getPoster() {
-        return poster;
-    }
-
-    public void setPoster(String poster) {
-        this.poster = poster;
+    public String getPosterURL() {
+        return posterURL;
     }
 
     public String getOverview() {
@@ -79,10 +74,6 @@ public class Movie implements Parcelable {
         return releaseDate;
     }
 
-    public void setReleaseDate(String releaseDate) {
-        this.releaseDate = releaseDate;
-    }
-
 
     @Override
     public int describeContents() {
@@ -94,7 +85,7 @@ public class Movie implements Parcelable {
         parcel.writeInt(id);
         parcel.writeString(title);
         parcel.writeDouble(rating);
-        parcel.writeString(poster);
+        parcel.writeString(posterURL);
         parcel.writeString(overview);
         parcel.writeString(releaseDate);
     }

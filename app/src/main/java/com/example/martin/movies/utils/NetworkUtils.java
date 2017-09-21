@@ -22,9 +22,14 @@ public final class NetworkUtils {
     private static final String TOP_RATED = "movie/top_rated";
     private static final String POPULAR = "movie/popular";
     private static final String IMAGE_SIZE = "w185";
+    private static final String MOVIE_PATH = "movie";
+    private static final String TRAILERS_PATH = "videos";
+    private static final String REVIEWS_PATH = "reviews";
+    private static final String LANGUAGE_QUERY = "language";
+    private static final String ENGLISH_LANGUAGE = "en-US";
 
     //Insert your KEY here
-    private static final String API_KEY = "your KEY";
+    private static final String API_KEY = "key";
 
     public static URL buildMovieListURL(boolean sort){
 
@@ -47,6 +52,61 @@ public final class NetworkUtils {
         return movieURL;
     }
 
+    public static URL buildPosterURL(String poster){
+
+        Uri poster_Uri = Uri.parse(POSTER_BASE_ULR).buildUpon()
+                .appendEncodedPath(IMAGE_SIZE)
+                .appendEncodedPath(poster)
+                .build();
+
+        URL poster_Url = null;
+        try {
+            poster_Url = new URL(poster_Uri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return poster_Url;
+    }
+
+    public static URL buildTrailersURL(int movieId){
+
+        Uri trailersUri = Uri.parse(BASE_URL).buildUpon()
+                .appendPath(MOVIE_PATH)
+                .appendPath("" + movieId)
+                .appendPath(TRAILERS_PATH)
+                .appendQueryParameter(API_QUERY, API_KEY)
+                .appendQueryParameter(LANGUAGE_QUERY, ENGLISH_LANGUAGE)
+                .build();
+
+        URL trailersURL = null;
+        try {
+            trailersURL = new URL(trailersUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return trailersURL;
+    }
+
+    public static URL buildReviewsURL(int movieId){
+        Uri trailersUri = Uri.parse(BASE_URL).buildUpon()
+                .appendPath(MOVIE_PATH)
+                .appendPath("" + movieId)
+                .appendPath(REVIEWS_PATH)
+                .appendQueryParameter(API_QUERY, API_KEY)
+                .build();
+
+        URL trailersURL = null;
+        try {
+            trailersURL = new URL(trailersUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return trailersURL;
+    }
+
     public static String getResponseFromURL(URL url){
 
         String result = null;
@@ -64,20 +124,5 @@ public final class NetworkUtils {
         return result;
     }
 
-    public static URL buildPosterURL(String poster){
 
-        Uri poster_Uri = Uri.parse(POSTER_BASE_ULR).buildUpon()
-                .appendEncodedPath(IMAGE_SIZE)
-                .appendEncodedPath(poster)
-                .build();
-
-        URL poster_Url = null;
-        try {
-            poster_Url = new URL(poster_Uri.toString());
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-
-        return poster_Url;
-    }
 }

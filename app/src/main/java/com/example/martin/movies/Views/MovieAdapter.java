@@ -45,7 +45,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     @Override
     public void onBindViewHolder(MovieViewHolder holder, int position) {
-        holder.setMoviePoster(movies.get(position).getPoster());
+        holder.setMoviePoster(movies.get(position).getPosterURL());
     }
 
     @Override
@@ -53,13 +53,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         return movies.size();
     }
 
-    public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private final ImageView mMovieArt;
         private final Context parent;
         private final MovieOnClickListener listener;
 
-        public MovieViewHolder(View itemView, MovieOnClickListener listener, Context parent) {
+        MovieViewHolder(View itemView, MovieOnClickListener listener, Context parent) {
             super(itemView);
 
             this.listener = listener;
@@ -68,7 +68,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             itemView.setOnClickListener(this);
         }
 
-        public void setMoviePoster(String posterPath){
+        void setMoviePoster(String posterPath){
             String posterURL = NetworkUtils.buildPosterURL(posterPath).toString();
             Log.i(CLASS_TAG, "Fetching the poster from" + posterURL);
             Picasso.with(parent)

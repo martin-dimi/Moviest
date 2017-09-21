@@ -3,12 +3,19 @@
 
     <string name="menu_item_sort">Sort</string>
     <string name="menu_item_refresh">Refresh</string>
-
-    <string name="movie_title">TITLE: </string>
-    <string name="movie_rating">RATING: </string>
-    <string name="movie_release_date">RELEASE: </string>
+    <string name="menu_item_favourite">FAV</string>
 
     <string name="movie_poster_description">Movie poster</string>
 
     <string name="error_internet">Error: No internet access</string>
+    <string name="button_fav">Favourite</string>
+    <string name="button_defav">Remove</string>
+    <string name="button_trailer">Trailer</string>
+
+    <string name="toast_add_movie">Movie has been added to favourites</string>
+    <string name="toast_delete_movie">Movie has been deleted from favourites</string>
+
+    <string name="detail_rating">Rating:</string>
+    <string name="detail_length">Release:</string>
+    <string name="detail_description">Description</string>
 </resources>

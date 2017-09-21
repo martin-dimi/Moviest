@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@+id/review"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:id="@+id/review_author"
+        style="@style/detail_author"
+        tools:text="Author"/>
+
+    <TextView
+        android:id="@+id/review_content"
+        style="@style/detail_content"
+        tools:text="Content"/>
+
+</LinearLayout>
