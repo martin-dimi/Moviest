@@ -21,15 +21,17 @@ public final class NetworkUtils {
     private static final String API_QUERY = "api_key";
     private static final String TOP_RATED = "movie/top_rated";
     private static final String POPULAR = "movie/popular";
-    private static final String IMAGE_SIZE = "w185";
+    private static final String POSTER_SIZE = "w185";
+    private static final String BACKDROP_SIZE = "w342";
     private static final String MOVIE_PATH = "movie";
     private static final String TRAILERS_PATH = "videos";
     private static final String REVIEWS_PATH = "reviews";
+    private static final String BACKDROP_PATH = "images";
     private static final String LANGUAGE_QUERY = "language";
     private static final String ENGLISH_LANGUAGE = "en-US";
 
     //Insert your KEY here
-    private static final String API_KEY = "key";
+    private static final String API_KEY = "your key";
 
     public static URL buildMovieListURL(boolean sort){
 
@@ -52,10 +54,12 @@ public final class NetworkUtils {
         return movieURL;
     }
 
-    public static URL buildPosterURL(String poster){
+    public static URL buildPosterURL(String poster, boolean isPoster){
+
+        String size = isPoster ? POSTER_SIZE : BACKDROP_SIZE;
 
         Uri poster_Uri = Uri.parse(POSTER_BASE_ULR).buildUpon()
-                .appendEncodedPath(IMAGE_SIZE)
+                .appendEncodedPath(size)
                 .appendEncodedPath(poster)
                 .build();
 
@@ -94,6 +98,24 @@ public final class NetworkUtils {
                 .appendPath(MOVIE_PATH)
                 .appendPath("" + movieId)
                 .appendPath(REVIEWS_PATH)
+                .appendQueryParameter(API_QUERY, API_KEY)
+                .build();
+
+        URL trailersURL = null;
+        try {
+            trailersURL = new URL(trailersUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return trailersURL;
+    }
+
+    public static URL buildBackDropURL(int movieId){
+        Uri trailersUri = Uri.parse(BASE_URL).buildUpon()
+                .appendPath(MOVIE_PATH)
+                .appendPath("" + movieId)
+                .appendPath(BACKDROP_PATH)
                 .appendQueryParameter(API_QUERY, API_KEY)
                 .build();
 

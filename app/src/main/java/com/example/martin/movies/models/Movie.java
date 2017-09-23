@@ -9,6 +9,7 @@ public class Movie implements Parcelable {
     private String title;
     private double rating;
     private String posterURL;
+    private String backdropURL;
     private String overview;
     private String releaseDate;
 
@@ -21,6 +22,7 @@ public class Movie implements Parcelable {
         this.title = title;
         this.rating = rating;
         this.posterURL = posterURL;
+        this.backdropURL = "";
         this.overview = overview;
         this.releaseDate = releaseDate;
     }
@@ -30,6 +32,7 @@ public class Movie implements Parcelable {
         this.title = in.readString();
         this.rating = in.readDouble();
         this.posterURL = in.readString();
+        this.backdropURL = in.readString();
         this.overview = in.readString();
         this.releaseDate = in.readString();
     }
@@ -86,6 +89,7 @@ public class Movie implements Parcelable {
         parcel.writeString(title);
         parcel.writeDouble(rating);
         parcel.writeString(posterURL);
+        parcel.writeString(backdropURL);
         parcel.writeString(overview);
         parcel.writeString(releaseDate);
     }
@@ -100,4 +104,11 @@ public class Movie implements Parcelable {
         }
     };
 
+    public String getBackdropURL() {
+        return backdropURL;
+    }
+
+    public void setBackdropURL(String backdropURL) {
+        this.backdropURL = backdropURL;
+    }
 }

@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="detail_poster_size_x">150dp</dimen>
-    <dimen name="detail_poster_size_y">200dp</dimen>
+    <dimen name="detail_backdrop_y">250dp</dimen>
+    <dimen name="detail_primary_text_margin_start">16dp</dimen>
+    <dimen name="detail_trailers_margin_horizontal">8dp</dimen>
 
-    <dimen name="detail_title_size">32sp</dimen>
+    <dimen name="detail_secondary_marginStart">0dp</dimen>
+    <dimen name="detail_secondary_marginTop">10dp</dimen>
+    <dimen name="detail_secondary_marginEnd">16dp</dimen>
+
+    <dimen name="detail_content_marginLeft">26dp</dimen>
+    <dimen name="detail_content_marginRight">8dp</dimen>
+    <dimen name="detail_content_marginTop">12dp</dimen>
+
+    <dimen name="detail_text_primary">22sp</dimen>
+    <dimen name="detail_text_secondary">18sp</dimen>
 
 </resources>

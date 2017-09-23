@@ -10,8 +10,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -55,29 +56,32 @@ public class MovieDetails extends AppCompatActivity implements
 
         movieToDisplay = getIntent().getParcelableExtra("Movie");
 
-        primaryBinding.tvMovieTitle.setText(movieToDisplay.getTitle());
         primaryBinding.tvMovieRelease.setText(movieToDisplay.getReleaseDate());
         primaryBinding.tvMovieRating.setText(String.valueOf(movieToDisplay.getRating()));
         primaryBinding.tvMovieDescription.setText(movieToDisplay.getOverview());
 
-        URL posterURL = NetworkUtils.buildPosterURL(movieToDisplay.getPosterURL());
-        Log.i(CLASS_TAG, "Fetching poster from: Memory");
-        Picasso.with(this)
-                .load(posterURL.toString())
-                .placeholder(R.drawable.ic_placeholder)
-                .error(R.drawable.ic_placeholder_error)
-                .into(primaryBinding.ivMoviePoster);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(movieToDisplay.getTitle());
+
+        System.out.println(NetworkUtils.buildBackDropURL(movieToDisplay.getId()));
 
         new FetchMoviesTrailers(this).execute(movieToDisplay.getId());
         new FetchMoviesReviews(this).execute(movieToDisplay.getId());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Cursor cursor = getContentResolver().query(CONTENT_URI.buildUpon().appendPath("" + movieToDisplay.getId()).build(), null, null, null);
+            Cursor cursor = getContentResolver()
+                    .query(CONTENT_URI.buildUpon()
+                            .appendPath("" + movieToDisplay.getId())
+                            .build(), null, null, null);
             if (cursor.getCount() > 0) {
-                setButtonToDelete();
+                        isFavourite = true;
+
             } else {
-                setButtonToAdd();
+                        isFavourite = false;
+
             }
             cursor.close();
         }
@@ -102,7 +106,8 @@ public class MovieDetails extends AppCompatActivity implements
         Uri uri = resolver.insert(CONTENT_URI, data);
         if (uri != null) {
             Toast.makeText(this, getString(R.string.toast_add_movie), Toast.LENGTH_SHORT).show();
-            setButtonToDelete();
+                    isFavourite = true;
+
         }
     }
 
@@ -112,23 +117,16 @@ public class MovieDetails extends AppCompatActivity implements
 
         if (deleted > 0) {
             Toast.makeText(this, getString(R.string.toast_delete_movie), Toast.LENGTH_SHORT).show();
-            setButtonToAdd();
+                    isFavourite = false;
+
         }
     }
 
-    private void setButtonToAdd() {
-        primaryBinding.bFavourite.setText(getString(R.string.button_fav));
-        isFavourite = false;
-    }
 
-    private void setButtonToDelete() {
-        primaryBinding.bFavourite.setText(getString(R.string.button_defav));
-        isFavourite = true;
-    }
 
     @Override
     public void onTrailersFetchComplete(List<String> data) {
-        for (int i = 0; i < data.size(); i++) {
+        for (int i = 0; i < data.size() - 1; i++) {
             final String id = data.get(i);
 
             View parent = LayoutInflater.from(this).inflate(R.layout.trailer_button, primaryBinding.constraint, false);
@@ -153,6 +151,13 @@ public class MovieDetails extends AppCompatActivity implements
                 ((ViewGroup) trailer.getParent()).removeView(trailer);
             primaryBinding.lvTrailers.addView(trailer);
         }
+        String backdropPath = data.get(data.size()-1);
+        URL posterURL = NetworkUtils.buildPosterURL(backdropPath, false);
+        Picasso.with(this)
+                .load(posterURL.toString())
+                .placeholder(R.drawable.ic_placeholder)
+                .error(R.drawable.ic_placeholder_error)
+                .into(primaryBinding.ivMoviePoster);
     }
 
     @Override
@@ -173,5 +178,16 @@ public class MovieDetails extends AppCompatActivity implements
                 ((ViewGroup) layout.getParent()).removeView(layout);
             primaryBinding.lvTrailers.addView(layout);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

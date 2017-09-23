@@ -24,7 +24,13 @@ public class FetchMoviesTrailers extends AsyncTask<Integer, Void,  List<String> 
         System.out.println(trailersURL);
         String trailersJSON = NetworkUtils.getResponseFromURL(trailersURL);
 
-        return MovieUtils.getTrailersIds(trailersJSON);
+        URL backDropURL = NetworkUtils.buildBackDropURL(movieId);
+        String backdrop = MovieUtils.getBackDrop(NetworkUtils.getResponseFromURL(backDropURL));
+
+        List<String> data = MovieUtils.getTrailersIds(trailersJSON);
+        data.add(backdrop);
+
+        return data;
     }
 
     @Override

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -23,6 +24,7 @@ import com.example.martin.movies.Views.MovieAdapter;
 import com.example.martin.movies.models.Movie;
 import com.example.martin.movies.utils.MovieUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -32,11 +34,14 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieOnClickListener{
 
     private static final String CLASS_LOG = MainActivity.class.getName();
+    private static final String MOVIE_LIST = "movie_list";
+    private static final String LIST_POSITION_KEY = "list_position";
 
     @BindView(R.id.rv_movie_list)  RecyclerView mMovieList;
     @BindView(R.id.pb_loading)  ProgressBar progressBar;
     @BindView(R.id.tv_error_internet)  TextView error_internet;
     private MovieAdapter adapter;
+    private int adapterPosition;
 
     private List<Movie> movies;
     private boolean preference = false;
@@ -58,8 +63,36 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         fetchOnline = new FetchMoviesNetwork(this, getLoaderManager(), new FetchMoviesOnlineTask());
         fetchDatabase = new FetchMoviesDatabase(this, new FetchMoviesDatabaseTask(), getLoaderManager(), getContentResolver());
-        fetchMovies();
 
+        if(savedInstanceState != null){
+            movies = savedInstanceState.getParcelableArrayList(MOVIE_LIST);
+            adapterPosition = savedInstanceState.getInt(LIST_POSITION_KEY);
+            adapter.setMovieData(movies);
+            mMovieList.getLayoutManager().scrollToPosition(adapterPosition);
+        }else {
+            fetchMovies();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mMovieList.getLayoutManager().scrollToPosition(adapterPosition);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        adapterPosition = ((GridLayoutManager)mMovieList.getLayoutManager()).findFirstVisibleItemPosition();
+        outState.putInt(LIST_POSITION_KEY, adapterPosition);
+        outState.putParcelableArrayList(MOVIE_LIST, (ArrayList<? extends Parcelable>) movies);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        movies = savedInstanceState.getParcelableArrayList(MOVIE_LIST);
+        adapterPosition = savedInstanceState.getInt(LIST_POSITION_KEY);
     }
 
     @Override

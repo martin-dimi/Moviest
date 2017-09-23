@@ -3,7 +3,7 @@ package com.example.martin.movies.models;
 public class Review {
 
     private final String author;
-    private String content;
+    private final String content;
 
     public Review(String author, String content) {
         this.author = author;

@@ -6,6 +6,8 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="detail_primary_text">
@@ -14,15 +16,20 @@
         <item name="android:textColor">@color/primaryText</item>
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">22sp</item>
+        <item name="android:textSize">@dimen/detail_text_primary</item>
+        <item name="android:layout_marginStart">@dimen/detail_primary_text_margin_start</item>
     </style>
 
     <style name="detail_secondary_text">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:fontFamily">sans-serif</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">@dimen/detail_text_secondary</item>
         <item name="android:textColor">@color/secondary_text</item>
+        <item name="android:layout_marginStart">@dimen/detail_secondary_marginStart</item>
+        <item name="android:layout_marginTop">@dimen/detail_secondary_marginTop</item>
+        <item name="android:layout_marginEnd">@dimen/detail_secondary_marginEnd</item>
+
     </style>
 
     <style name="detail_author">
@@ -41,8 +48,8 @@
         <item name="android:fontFamily">sans-serif-condensed</item>
         <item name="android:textColor">@color/secondary_text</item>
         <item name="android:textSize">14sp</item>
-        <item name="android:layout_marginLeft">26dp</item>
-        <item name="android:layout_marginRight">8dp</item>
-        <item name="android:layout_marginTop">12dp</item>
+        <item name="android:layout_marginLeft">@dimen/detail_content_marginLeft</item>
+        <item name="android:layout_marginRight">@dimen/detail_content_marginRight</item>
+        <item name="android:layout_marginTop">@dimen/detail_content_marginTop</item>
     </style>
 </resources>

@@ -69,7 +69,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         }
 
         void setMoviePoster(String posterPath){
-            String posterURL = NetworkUtils.buildPosterURL(posterPath).toString();
+            String posterURL = NetworkUtils.buildPosterURL(posterPath, true).toString();
             Log.i(CLASS_TAG, "Fetching the poster from" + posterURL);
             Picasso.with(parent)
                     .load(posterURL)

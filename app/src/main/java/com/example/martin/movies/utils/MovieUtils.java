@@ -23,6 +23,8 @@ public class MovieUtils {
     private static final String CLASS_TAG = MovieUtils.class.getName();
 
     private static final String MOVIES = "results";
+    private static final String BACKDROPS = "backdrops";
+    private static final String BC_PATH = "file_path";
     private static final String ID = "id";
     private static final String TITLE = "title";
     private static final String RATING = "vote_average";
@@ -157,5 +159,21 @@ public class MovieUtils {
             e.printStackTrace();
         }
         return reviews;
+    }
+
+    public static String getBackDrop(String json){
+        try {
+            //getting the initial page
+            JSONObject page = new JSONObject(json);
+
+            JSONArray trailers = page.getJSONArray(BACKDROPS);
+
+            JSONObject reviewJson = trailers.getJSONObject(0);
+            return reviewJson.getString(BC_PATH);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

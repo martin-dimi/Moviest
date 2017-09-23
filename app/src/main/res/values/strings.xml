@@ -8,8 +8,6 @@
     <string name="movie_poster_description">Movie poster</string>
 
     <string name="error_internet">Error: No internet access</string>
-    <string name="button_fav">Favourite</string>
-    <string name="button_defav">Remove</string>
     <string name="button_trailer">Trailer</string>
 
     <string name="toast_add_movie">Movie has been added to favourites</string>
