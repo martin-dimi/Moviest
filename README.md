@@ -1,7 +1,7 @@
 # Movies App
 
 ## Description
-Android application designed to browse the most viewed movies or most popular. By clicking on a movie poster,
+Android application designed to browse the most viewed/most popular movies, depending on the user. By clicking on a movie poster,
 it leads to a Details screen, which shows Rating, Release date, Description, Trailer and User reviews for
 the selected movie. You can also add movies to a favourites list by clicking on the favourites button,
 for later offline display. Fetches movie data from movieDB.com.  
