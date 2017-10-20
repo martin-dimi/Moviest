@@ -76,13 +76,7 @@ public class MovieDetails extends AppCompatActivity implements
                     .query(CONTENT_URI.buildUpon()
                             .appendPath("" + movieToDisplay.getId())
                             .build(), null, null, null);
-            if (cursor.getCount() > 0) {
-                        isFavourite = true;
-
-            } else {
-                        isFavourite = false;
-
-            }
+            isFavourite = cursor.getCount() > 0;
             cursor.close();
         }
     }
